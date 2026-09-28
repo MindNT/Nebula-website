@@ -22,9 +22,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Node 24 es la version con la que se desarrolla y se prueba el sitio
+      # (npm 11). npm ci exige que el lock y la version de npm coincidan: con
+      # npm 10 el lock no cuadra y el deploy se cae.
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
 
       - run: npm ci
