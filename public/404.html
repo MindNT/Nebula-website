@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Nebula</title>
+  </head>
+  <body>
+    <p>Abriendo Nebula…</p>
+    <!--
+      GitHub Pages no sabe de rutas: /planes y /cobertura no son archivos, asi
+      que las pide con un 404 y se sirve esta pagina. La ruta pedida se guarda
+      en sessionStorage, se redirige a la raiz y el script de public/index.html
+      la devuelve a la barra de direcciones antes de que arranque React.
+      El "/" es correcto porque el sitio vive en la raiz del dominio.
+    -->
+    <script>
+      (function () {
+        try {
+          sessionStorage.setItem("nebula:redirect", window.location.href);
+        } catch (error) {
+          // sin sessionStorage (modo privado) el sitio igual abre en la raiz
+        }
+        window.location.replace("/");
+      })();
+    </script>
+  </body>
+</html>

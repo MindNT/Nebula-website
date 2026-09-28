@@ -1,43 +1,194 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es-MX">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" href="%PUBLIC_URL%/favicon.png" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/favicon.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
+    <title>Nebula POS · Software de pedidos para restaurantes en México</title>
     <meta
       name="description"
-      content="Web site created using create-react-app"
+      content="Nebula: software de pedidos para restaurantes y cafeterías en México. Sigue cada pedido, descuenta el inventario solo y no cobra comisión. En toda la República."
     />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+    <meta name="author" content="Nebula" />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Nebula" />
+    <meta property="og:locale" content="es_MX" />
+    <meta property="og:url" content="" />
+    <meta
+      property="og:title"
+      content="Nebula · Cada pedido en su lugar, cada venta en su número"
+    />
+    <meta
+      property="og:description"
+      content="Software de pedidos para restaurantes, cafeterías y bares en toda la República Mexicana. Sin comisión por pedido."
+    />
+    <meta property="og:image" content="" data-src="%PUBLIC_URL%/favicon.png" />
+    <meta property="og:image:width" content="1000" />
+    <meta property="og:image:height" content="1000" />
+    <meta property="og:image:alt" content="Nebula" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta
+      name="twitter:title"
+      content="Nebula · Cada pedido en su lugar, cada venta en su número"
+    />
+    <meta
+      name="twitter:description"
+      content="Software de pedidos para restaurantes, cafeterías y bares en toda la República Mexicana. Sin comisión por pedido."
+    />
+    <meta name="twitter:image" content="" data-src="%PUBLIC_URL%/favicon.png" />
+
+    <!--
+      Cobertura nacional y precios en los datos estructurados. Los precios salen
+      de utils/contenido.js y un test falla si se desincronizan. Al fijaar el
+      dominio, cambia las rutas relativas (/favicon.png) por absolutas.
     -->
-    <title>React App</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "name": "Nebula",
+            "inLanguage": "es-MX",
+            "description": "Software de pedidos e inventario para restaurantes, cafeterías y bares en México."
+          },
+          {
+            "@type": "Organization",
+            "name": "Nebula",
+            "url": "/",
+            "logo": "/favicon.png",
+            "description": "Software de pedidos e inventario para restaurantes, cafeterías y bares en México.",
+            "areaServed": {
+              "@type": "Country",
+              "name": "México"
+            },
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "contactType": "sales",
+              "telephone": "+529991778325",
+              "availableLanguage": "es-MX",
+              "areaServed": "MX"
+            }
+          },
+          {
+            "@type": "SoftwareApplication",
+            "name": "Nebula",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Web",
+            "inLanguage": "es-MX",
+            "description": "Nebula organiza el pedido de principio a fin: seguimiento con estado y responsable, menú por categorías, inventario que se descuenta solo y analíticas de ventas. Sin comisión por pedido. Disponible en toda la República Mexicana.",
+            "areaServed": {
+              "@type": "Country",
+              "name": "México"
+            },
+            "offers": [
+              {
+                "@type": "Offer",
+                "name": "Nebula Básico",
+                "description": "Todo tu menú y tus pedidos en un solo lugar, sin comisión por pedido.",
+                "price": "599",
+                "priceCurrency": "MXN",
+                "availability": "https://schema.org/InStock",
+                "areaServed": {
+                  "@type": "Country",
+                  "name": "México"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+
+    <!--
+      El dominio todavia no esta fijo en el codigo, asi que canonical, og:url y
+      la imagen para compartir se arman con el host desde el que se sirve la
+      pagina. Cuando exista el dominio definitivo, quita este script y deja las
+      tres etiquetas con la URL absoluta.
+
+      Ademas devuelve la ruta que pidio public/404.html: GitHub Pages responde
+      404 a /planes y /cobertura, esa pagina guarda la URL y redirige aqui, y
+      con esto React abre en la ruta correcta sin recargar.
+    -->
+    <script>
+      (function () {
+        var origen = window.location.origin;
+        var ruta = window.location.pathname;
+
+        try {
+          var pedida = sessionStorage.getItem("nebula:redirect");
+          if (pedida) {
+            sessionStorage.removeItem("nebula:redirect");
+            var destino = new URL(pedida);
+            // solo rutas propias: nada de archivos de /static ni de otros sitios
+            if (
+              destino.host === window.location.host &&
+              destino.pathname.indexOf("/static/") === -1
+            ) {
+              ruta = destino.pathname + destino.search + destino.hash;
+            }
+          }
+        } catch (error) {
+          // sin sessionStorage el sitio abre en la ruta de la barra
+        }
+
+        var canonico = document.createElement("link");
+        canonico.rel = "canonical";
+        canonico.href = origen + ruta;
+        document.head.appendChild(canonico);
+
+        // React todavia no ha montado: se devuelve la ruta pedida antes de que
+        // lea el router, para que /planes abra en /planes y no en la raiz.
+        if (ruta !== window.location.pathname) {
+          window.history.replaceState(null, "", ruta);
+        }
+
+        var ogUrl = document.querySelector('meta[property="og:url"]');
+        if (ogUrl) ogUrl.setAttribute("content", origen + ruta);
+
+        // data-src ya trae %PUBLIC_URL% resuelto; si quedo absoluta se usa tal cual
+        var absoluta = function (ruta) {
+          return /^https?:/.test(ruta) ? ruta : origen + ruta;
+        };
+
+        var ogImagen = document.querySelector('meta[property="og:image"]');
+        if (ogImagen) {
+          ogImagen.setAttribute(
+            "content",
+            absoluta(ogImagen.getAttribute("data-src"))
+          );
+        }
+
+        var twImagen = document.querySelector('meta[name="twitter:image"]');
+        if (twImagen) {
+          twImagen.setAttribute(
+            "content",
+            absoluta(twImagen.getAttribute("data-src"))
+          );
+        }
+      })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <noscript>Necesitas habilitar JavaScript para usar esta app.</noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
   </body>
 </html>

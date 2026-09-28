@@ -1,3 +1,5 @@
-# https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Allow: /
+
+# Al definir el dominio, descomenta y completa la linea con la URL del sitemap.
+# Sitemap: https://TU-DOMINIO/sitemap.xml
