@@ -32,7 +32,10 @@
       property="og:description"
       content="Software de pedidos para restaurantes, cafeterías y bares en toda la República Mexicana. Sin comisión por pedido."
     />
-    <meta property="og:image" content="" data-src="%PUBLIC_URL%/favicon.png" />
+    <meta
+      property="og:image"
+      content="https://www.nebula.mindnt.com.mx/favicon.png"
+    />
     <meta property="og:image:width" content="1000" />
     <meta property="og:image:height" content="1000" />
     <meta property="og:image:alt" content="Nebula" />
@@ -46,12 +49,15 @@
       name="twitter:description"
       content="Software de pedidos para restaurantes, cafeterías y bares en toda la República Mexicana. Sin comisión por pedido."
     />
-    <meta name="twitter:image" content="" data-src="%PUBLIC_URL%/favicon.png" />
+    <meta
+      name="twitter:image"
+      content="https://www.nebula.mindnt.com.mx/favicon.png"
+    />
 
     <!--
       Cobertura nacional y precios en los datos estructurados. Los precios salen
-      de utils/contenido.js y un test falla si se desincronizan. Al fijaar el
-      dominio, cambia las rutas relativas (/favicon.png) por absolutas.
+      de utils/contenido.js y un test falla si se desincronizan. El dominio
+      sale de public/CNAME, que es el que GitHub Pages usa para publicarse.
     -->
     <script type="application/ld+json">
       {
@@ -60,14 +66,15 @@
           {
             "@type": "WebSite",
             "name": "Nebula",
+            "url": "https://www.nebula.mindnt.com.mx/",
             "inLanguage": "es-MX",
             "description": "Software de pedidos e inventario para restaurantes, cafeterías y bares en México."
           },
           {
             "@type": "Organization",
             "name": "Nebula",
-            "url": "/",
-            "logo": "/favicon.png",
+            "url": "https://www.nebula.mindnt.com.mx/",
+            "logo": "https://www.nebula.mindnt.com.mx/favicon.png",
             "description": "Software de pedidos e inventario para restaurantes, cafeterías y bares en México.",
             "areaServed": {
               "@type": "Country",
@@ -112,10 +119,9 @@
     </script>
 
     <!--
-      El dominio todavia no esta fijo en el codigo, asi que canonical, og:url y
-      la imagen para compartir se arman con el host desde el que se sirve la
-      pagina. Cuando exista el dominio definitivo, quita este script y deja las
-      tres etiquetas con la URL absoluta.
+      Las cuatro rutas comparten este mismo index.html, asi que canonical y
+      og:url se arman por ruta: una sola etiqueta fija de canonical "/"
+      declararia /planes y /cobertura duplicados de la raiz.
 
       Ademas devuelve la ruta que pidio public/404.html: GitHub Pages responde
       404 a /planes y /cobertura, esa pagina guarda la URL y redirige aqui, y
@@ -156,27 +162,6 @@
 
         var ogUrl = document.querySelector('meta[property="og:url"]');
         if (ogUrl) ogUrl.setAttribute("content", origen + ruta);
-
-        // data-src ya trae %PUBLIC_URL% resuelto; si quedo absoluta se usa tal cual
-        var absoluta = function (ruta) {
-          return /^https?:/.test(ruta) ? ruta : origen + ruta;
-        };
-
-        var ogImagen = document.querySelector('meta[property="og:image"]');
-        if (ogImagen) {
-          ogImagen.setAttribute(
-            "content",
-            absoluta(ogImagen.getAttribute("data-src"))
-          );
-        }
-
-        var twImagen = document.querySelector('meta[name="twitter:image"]');
-        if (twImagen) {
-          twImagen.setAttribute(
-            "content",
-            absoluta(twImagen.getAttribute("data-src"))
-          );
-        }
       })();
     </script>
 

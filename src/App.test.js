@@ -739,3 +739,32 @@ test("las rutas de assets son relativas, para que el sitio aguante el subdominio
   // con homepage "." CRA genera ./static/... en vez de /static/...
   expect(paquete.homepage).toBe(".");
 });
+
+test("las urls absolutas usan el dominio de public/CNAME", () => {
+  const cname = leerPublico("CNAME").trim();
+  const html = leerPublico("index.html");
+
+  expect(cname).toBe("www.nebula.mindnt.com.mx");
+  expect(metaDe(html, 'property="og:image"')).toBe(
+    `https://${cname}/favicon.png`
+  );
+  expect(metaDe(html, 'name="twitter:image"')).toBe(
+    `https://${cname}/favicon.png`
+  );
+  expect(leerPublico("robots.txt")).toContain(
+    `Sitemap: https://${cname}/sitemap.xml`
+  );
+
+  // el sitemap lista las cuatro rutas y ninguna otra
+  const sitemap = leerPublico("sitemap.xml");
+  const rutas = Array.from(sitemap.matchAll(/<loc>https:\/\/[^/]+([^<]*)<\/loc>/g))
+    .map((ruta) => ruta[1]);
+  expect(rutas).toEqual(["/", "/planes", "/sistema", "/cobertura"]);
+  rutas.forEach((ruta) => expect(sitemap).toContain(`https://${cname}${ruta}`));
+
+  // los datos estructurados no dejan rutas relativas
+  const bloque = html.match(
+    /<script type="application\/ld\+json">([\s\S]*?)<\/script>/
+  );
+  expect(bloque[1]).not.toMatch(/"(url|logo|image)": "\//);
+});

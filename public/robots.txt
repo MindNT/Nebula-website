@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
 
-# Al definir el dominio, descomenta y completa la linea con la URL del sitemap.
-# Sitemap: https://TU-DOMINIO/sitemap.xml
+Sitemap: https://www.nebula.mindnt.com.mx/sitemap.xml
