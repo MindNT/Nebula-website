@@ -21,7 +21,7 @@ export default function Pie() {
             <Link to="/" className="flex items-center">
               <Logo className="h-7 w-auto" />
             </Link>
-            <p className="mt-3 text-[13px] leading-relaxed text-white/45">
+            <p className="mt-3 text-[13px] leading-relaxed text-white/55">
               Pedidos, cocina, barra y las métricas de tu negocio en el celular.
               Sin comisiones por pedido.
             </p>
@@ -36,7 +36,7 @@ export default function Pie() {
                       href={enlace.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[13px] text-white/45 transition-colors hover:text-white"
+                      className="inline-block py-1.5 text-[13px] text-white/55 transition-colors hover:text-white"
                     >
                       {enlace.texto}
                     </a>
@@ -45,7 +45,7 @@ export default function Pie() {
                   <li key={enlace.texto}>
                     <Link
                       to={enlace.href}
-                      className="text-[13px] text-white/45 transition-colors hover:text-white"
+                      className="inline-block py-1.5 text-[13px] text-white/55 transition-colors hover:text-white"
                     >
                       {enlace.texto}
                     </Link>
@@ -56,7 +56,7 @@ export default function Pie() {
           </nav>
         </div>
 
-        <div className="mt-10 flex flex-col gap-2 border-t border-white/10 pt-6 text-[11px] text-white/30 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-10 flex flex-col gap-2 border-t border-white/10 pt-6 text-[11px] text-white/55 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} Nebula. Todos los derechos reservados.</p>
           <p>
             Mapa de México:{" "}

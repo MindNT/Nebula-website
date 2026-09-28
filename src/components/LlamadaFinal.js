@@ -5,7 +5,13 @@ import Aparecer from "./Aparecer";
 
 export default function LlamadaFinal() {
   return (
-    <section id="asesor" aria-label="Hablar con un asesor" className="scroll-mt-20 px-5 py-24 lg:px-8">
+    // `relative isolate` dejan al halo con -z-10 dentro de la seccion: si no, el
+    // fondo negro de la raiz lo tapa y el cierre se ve plano.
+    <section
+      id="asesor"
+      aria-label="Hablar con un asesor"
+      className="relative isolate scroll-mt-20 px-5 py-24 lg:px-8"
+    >
       <Aparecer className="mx-auto max-w-5xl text-center">
         <div
           aria-hidden="true"

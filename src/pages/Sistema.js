@@ -11,6 +11,7 @@ export default function Sistema() {
       {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
       <video
         className="mt-3 h-auto w-full"
+        poster={`${process.env.PUBLIC_URL}/videos/NebulaVideo1-poster.jpg`}
         width="2118"
         height="1284"
         autoPlay

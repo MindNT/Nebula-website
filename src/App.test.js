@@ -127,11 +127,29 @@ test("muestra el video del producto en la vista previa", () => {
   ]);
   expect(video).toHaveAttribute("poster", "/videos/NebulaVideo-poster.jpg");
   expect(video).toHaveAttribute("width", "2118");
-  expect(video).toHaveAttribute("height", "1284");
+  // El archivo real es 2118x1032: con 1284 el navegador reservaba de mas.
+  expect(video).toHaveAttribute("height", "1032");
   expect(video).toHaveAttribute("autoplay");
   expect(video).toHaveAttribute("loop");
   expect(video).toHaveAttribute("playsinline");
   expect(video).toHaveAttribute("preload", "metadata");
+});
+
+test("los posters de los videos existen en public", () => {
+  enRuta("/sistema");
+  const poster = screen
+    .getByLabelText(/video de nebula en accion/i)
+    .getAttribute("poster");
+  expect(poster).toBe("/videos/NebulaVideo1-poster.jpg");
+
+  for (const archivo of [
+    "videos/NebulaVideo-poster.jpg",
+    "videos/NebulaVideo1-poster.jpg",
+  ]) {
+    expect(fs.existsSync(path.join(__dirname, "..", "public", archivo))).toBe(
+      true
+    );
+  }
 });
 
 test("el mapa marca en azul los estados con clientes y numera cu\u00e1ntos hay", async () => {
@@ -618,6 +636,66 @@ test("el mes gratis ya no se ofrece en ninguna parte del sitio", async () => {
       await screen.findByRole("region", { name: "Cobertura" });
     }
     expect(document.body.textContent).not.toMatch(/mes gratis/i);
+    unmount();
+  }
+
+  // El texto renderizado no basta: un toggle lo esconderia hasta pulsarlo, asi
+  // que tambien se busca la palabra en el codigo de los componentes.
+  const fuentes = fs
+    .readdirSync(path.join(__dirname, "components"))
+    .map((archivo) => path.join(__dirname, "components", archivo))
+    .concat(fs.readdirSync(path.join(__dirname, "pages")).map((archivo) => path.join(__dirname, "pages", archivo)))
+    .concat([path.join(__dirname, "utils", "contenido.js")]);
+
+  for (const archivo of fuentes) {
+    expect(fs.readFileSync(archivo, "utf8")).not.toMatch(/mes\s+gratis/i);
+  }
+});
+
+test("el texto chico nunca baja de la mitad de blanco", async () => {
+  // Contra un fondo negro, white/30 queda en 2.5:1 y white/45 en 4.4:1: los dos
+  // fallan el contraste minimo de WCAG AA para texto normal. Los unicos lugares
+  // donde se acepta mas apagado son los numeros gigantes de los pasos.
+  const apagados = [];
+  const esTextoGrande = (clases) =>
+    /text-\[(1[89]|[2-9]\d)px\]|text-(xl|[2-9]xl)\b/.test(clases);
+
+  for (const ruta of ["/", "/planes", "/sistema", "/cobertura"]) {
+    const { unmount } = enRuta(ruta);
+    if (ruta === "/cobertura") {
+      await screen.findByRole("region", { name: "Cobertura" });
+    }
+
+    document.querySelectorAll('[class*="text-white/"]').forEach((el) => {
+      const clases = el.getAttribute("class") || "";
+      const opacidad = Number((clases.match(/text-white\/(\d+)/) || [])[1]);
+      if (opacidad && opacidad <= 45 && !esTextoGrande(clases)) {
+        apagados.push(
+          `${ruta}: ${clases} -> "${el.textContent.trim().slice(0, 30)}"`
+        );
+      }
+    });
+    unmount();
+  }
+
+  expect(apagados).toEqual([]);
+});
+
+test("los halos azules se ven: su seccion aísla el contexto de apilamiento", async () => {
+  // Con -z-10 y sin `isolate`, el halo queda detras del fondo negro de la raiz
+  // de la app y nunca se pinta, por mas azul que tenga el elemento.
+  for (const ruta of ["/", "/planes", "/sistema", "/cobertura"]) {
+    const { unmount } = enRuta(ruta);
+    if (ruta === "/cobertura") {
+      await screen.findByRole("region", { name: "Cobertura" });
+    }
+
+    document.querySelectorAll("section").forEach((seccion) => {
+      const halos = seccion.querySelectorAll(".absolute.-z-10");
+      if (halos.length === 0) return;
+      const clases = seccion.getAttribute("class") || "";
+      expect(clases).toMatch(/isolate/);
+    });
     unmount();
   }
 });

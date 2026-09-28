@@ -7,10 +7,12 @@ import Logo from "./Logo";
 
 export default function Hero({ onProbar }) {
   return (
+    // `isolate` crea el contexto de apilamiento de la seccion: sin el, el halo
+    // con -z-10 queda detras del fondo negro de la raiz y no se ve nunca.
     <section
       id="inicio"
       aria-label="Inicio"
-      className="relative overflow-hidden px-5 pb-8 pt-28 sm:pt-32 lg:px-8"
+      className="relative isolate overflow-hidden px-5 pb-8 pt-28 sm:pt-32 lg:px-8"
     >
       <div
         aria-hidden="true"
@@ -22,13 +24,14 @@ export default function Hero({ onProbar }) {
 
         <Link
           to="/planes"
-          className="mt-7 inline-flex items-center gap-2 rounded-full border border-white/15 px-3.5 py-1 text-xs text-white/70 transition-colors hover:border-white/40 hover:text-white"
+          className="mt-7 inline-flex flex-wrap items-center justify-center gap-x-2 gap-y-1 rounded-full border border-white/15 px-3.5 py-1 text-center text-xs text-white/70 transition-colors hover:border-white/40 hover:text-white"
         >
           <span className="rounded-full bg-azul-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
             0 comisiones
           </span>
           Precio fijo al mes, sin comisión por pedido
-          <Icono nombre="flecha" className="h-3 w-3" />
+          {/* En 320px la flecha se caia a una tercera linea del cintillo. */}
+          <Icono nombre="flecha" className="hidden h-3 w-3 sm:block" />
         </Link>
 
         <h1 className="mt-6 text-[2rem] font-semibold leading-[1.08] tracking-display sm:text-5xl lg:text-6xl">
@@ -58,7 +61,7 @@ export default function Hero({ onProbar }) {
           </Button>
         </div>
 
-        <p className="mt-4 text-[13px] text-white/35">
+        <p className="mt-4 text-[13px] text-white/55">
           Un asesor te responde por WhatsApp · Sin compromiso
         </p>
       </div>

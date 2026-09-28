@@ -54,7 +54,7 @@ export default function Header({ onProbar }) {
             <li key={item.href}>
               <Link
                 to={item.href}
-                className="text-sm text-white/70 transition-colors hover:text-white"
+                className="py-2 text-sm text-white/70 transition-colors hover:text-white"
               >
                 {item.etiqueta}
               </Link>

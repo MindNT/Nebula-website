@@ -1,6 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 
-export default function Aparecer({ children, retardo = 0, className = "" }) {
+// Envoltorio que anima a la entrada. `como` deja que el nodo sea el `li` de una
+// lista, para no meter un `div` entre el `ol` y sus items.
+export default function Aparecer({
+  children,
+  retardo = 0,
+  className = "",
+  como: Componente = "div",
+}) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
 
@@ -28,7 +35,7 @@ export default function Aparecer({ children, retardo = 0, className = "" }) {
   }, []);
 
   return (
-    <div
+    <Componente
       ref={ref}
       style={{ transitionDelay: `${retardo}ms` }}
       className={`transition-all duration-700 ease-out motion-reduce:transition-none ${
@@ -36,6 +43,6 @@ export default function Aparecer({ children, retardo = 0, className = "" }) {
       } ${className}`}
     >
       {children}
-    </div>
+    </Componente>
   );
 }

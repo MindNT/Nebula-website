@@ -10,7 +10,12 @@ import { formulario } from "../utils/contenido";
 import Icono from "./Iconos";
 
 const CAMPO =
-  "w-full rounded-xl border border-white/15 bg-white/[0.04] px-4 py-3 text-[15px] text-white placeholder:text-white/30 focus:border-azul-400 focus:outline-none focus:ring-1 focus:ring-azul-400";
+  "w-full rounded-xl border border-white/15 bg-white/[0.04] px-4 py-3 text-[15px] text-white placeholder:text-white/50 focus:border-azul-400 focus:outline-none focus:ring-1 focus:ring-azul-400";
+// Los selects quitan la flecha del navegador (para que no se vea la del sistema
+// sobre fondo oscuro), asi que el desplegable se dibuja aqui, girada hacia abajo.
+const SELECT = `${CAMPO} appearance-none pr-10`;
+const FLECHA_SELECT =
+  "pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-white/55";
 const ETIQUETA = "mb-1.5 block text-[13px] font-medium text-white/70";
 const REQUERIDO = (
   <span aria-hidden="true" className="text-azul-300">
@@ -86,7 +91,9 @@ export default function FormularioNegocio({ onCerrar }) {
         role="dialog"
         aria-modal="true"
         aria-label={formulario.titulo}
-        className="relative max-h-[92vh] w-full max-w-xl overflow-y-auto rounded-t-3xl border border-white/10 bg-tinta-900 p-6 sm:rounded-3xl sm:p-8"
+        // dvh porque en iOS el 92vh se come la barra del navegador y el boton de
+        // enviar queda pegado al borde de la pantalla.
+        className="relative max-h-[92vh] max-h-[92dvh] w-full max-w-xl overflow-y-auto rounded-t-3xl border border-white/10 bg-tinta-900 p-6 pb-10 sm:rounded-3xl sm:p-8"
       >
         <button
           type="button"
@@ -137,7 +144,7 @@ export default function FormularioNegocio({ onCerrar }) {
               />
             </div>
 
-            <div>
+            <div className="relative">
               <label className={ETIQUETA} htmlFor="tipo">
                 Tipo de negocio
               </label>
@@ -146,7 +153,7 @@ export default function FormularioNegocio({ onCerrar }) {
                 name="tipo"
                 value={datos.tipo}
                 onChange={cambiar}
-                className={`${CAMPO} appearance-none`}
+                className={SELECT}
               >
                 {formulario.tipos.map((tipo) => (
                   <option key={tipo} value={tipo} className="bg-tinta-900">
@@ -154,9 +161,10 @@ export default function FormularioNegocio({ onCerrar }) {
                   </option>
                 ))}
               </select>
+              <Icono nombre="flecha" className={`h-4 w-4 rotate-90 ${FLECHA_SELECT}`} />
             </div>
 
-            <div>
+            <div className="relative">
               <label className={ETIQUETA} htmlFor="sucursales">
                 ¿Cuántas sucursales?
               </label>
@@ -165,7 +173,7 @@ export default function FormularioNegocio({ onCerrar }) {
                 name="sucursales"
                 value={datos.sucursales}
                 onChange={cambiar}
-                className={`${CAMPO} appearance-none`}
+                className={SELECT}
               >
                 {formulario.sucursales.map((cantidad) => (
                   <option
@@ -177,11 +185,12 @@ export default function FormularioNegocio({ onCerrar }) {
                   </option>
                 ))}
               </select>
+              <Icono nombre="flecha" className={`h-4 w-4 rotate-90 ${FLECHA_SELECT}`} />
             </div>
 
             <div className="sm:col-span-2">
               <label className={ETIQUETA} htmlFor="telefono">
-                Teléfono <span className="text-white/35">(opcional)</span>
+                Teléfono <span className="text-white/55">(opcional)</span>
               </label>
               <input
                 id="telefono"
@@ -197,7 +206,7 @@ export default function FormularioNegocio({ onCerrar }) {
             <div className="sm:col-span-2">
               <label className={ETIQUETA} htmlFor="necesidad">
                 ¿Qué te gustaría resolver primero?{" "}
-                <span className="text-white/35">(opcional)</span>
+                <span className="text-white/55">(opcional)</span>
               </label>
               <textarea
                 id="necesidad"
@@ -222,7 +231,7 @@ export default function FormularioNegocio({ onCerrar }) {
             {formulario.cta}
           </Button>
 
-          <p className="mt-3 text-center text-[12px] text-white/30">
+          <p className="mt-3 text-center text-[12px] text-white/55">
             Se abre WhatsApp con tu mensaje listo para enviar.
           </p>
         </form>

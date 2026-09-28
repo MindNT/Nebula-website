@@ -31,7 +31,7 @@ export default function Testimonios() {
                     <span className="block text-[13px] font-semibold">
                       {testimonio.autor}
                     </span>
-                    <span className="block text-[13px] text-white/40">
+                    <span className="block text-[13px] text-white/55">
                       {testimonio.negocio}
                     </span>
                   </span>

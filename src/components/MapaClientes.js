@@ -99,7 +99,11 @@ export default function MapaClientes({ nivel: Titulo = "h2", onProbar }) {
             })}
           </g>
 
+          {/* Los numeros del mapa se dibujan a partir de md: en un celular el
+              mapa mide 320px y el digito mas grande queda en 7px, ilegible. Los
+              chips de abajo y el titulo del svg ya dan el dato. */}
           <g
+            className="hidden md:block"
             fill="#FFFFFF"
             textAnchor="middle"
             dominantBaseline="central"
@@ -131,7 +135,7 @@ export default function MapaClientes({ nivel: Titulo = "h2", onProbar }) {
           ))}
         </ul>
 
-        <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[13px] text-white/40">
+        <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[13px] text-white/55">
           <li className="flex items-center gap-2">
             <span
               aria-hidden="true"

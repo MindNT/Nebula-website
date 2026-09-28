@@ -131,12 +131,18 @@ export default function Galeria() {
                 onClick={() => irA(i)}
                 aria-label={`Tarjeta ${i + 1} de ${total}`}
                 aria-current={indice === i}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  indice === i
-                    ? "w-7 bg-azul-500"
-                    : "w-1.5 bg-white/25 hover:bg-white/50"
-                }`}
-              />
+                // El punto se ve de 6px, pero el boton mide 32x32 para que se
+                // pueda tocar con el dedo sin fallar.
+                className="group grid h-8 w-6 place-items-center"
+              >
+                <span
+                  className={`block h-1.5 rounded-full transition-all duration-300 ${
+                    indice === i
+                      ? "w-7 bg-azul-500"
+                      : "w-1.5 bg-white/25 group-hover:bg-white/50"
+                  }`}
+                />
+              </button>
             ))}
           </div>
 

@@ -25,23 +25,21 @@ export default function ComoFunciona() {
 
         <ol className="mt-14 grid gap-10 md:grid-cols-3">
           {pasos.map((paso, indice) => (
-            <Aparecer key={paso.numero} retardo={indice * 110}>
-              <li className="relative">
-                <div className="flex items-center gap-4">
-                  <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-azul-500 text-white">
-                    <Icono nombre={paso.icono} className="h-6 w-6" />
-                  </span>
-                  <span className="text-4xl font-semibold tracking-display text-white/40 sm:text-5xl">
-                    {paso.numero}
-                  </span>
-                </div>
-                <h3 className="mt-6 text-xl font-semibold tracking-titulo">
-                  {paso.titulo}
-                </h3>
-                <p className="mt-2.5 text-[15px] leading-relaxed text-white/50">
-                  {paso.texto}
-                </p>
-              </li>
+            <Aparecer como="li" key={paso.numero} retardo={indice * 110} className="relative">
+              <div className="flex items-center gap-4">
+                <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-azul-500 text-white">
+                  <Icono nombre={paso.icono} className="h-6 w-6" />
+                </span>
+                <span className="text-4xl font-semibold tracking-display text-white/40 sm:text-5xl">
+                  {paso.numero}
+                </span>
+              </div>
+              <h3 className="mt-6 text-xl font-semibold tracking-titulo">
+                {paso.titulo}
+              </h3>
+              <p className="mt-2.5 text-[15px] leading-relaxed text-white/50">
+                {paso.texto}
+              </p>
             </Aparecer>
           ))}
         </ol>

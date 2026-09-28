@@ -36,12 +36,61 @@ directories and is documented in `../AGENTS.md`.
 
 ## Current known-failing state
 
-Nada: `CI=true npm test` (18 tests) y `CI=true npm run build` pasan limpios. Estos dos problemas
+Nada: `CI=true npm test` (49 tests) y `CI=true npm run build` pasan limpios. Estos dos problemas
 ya no existen y no hay que reintroducirlos:
 
 - `src/App.test.js` ya no es el boilerplate de CRA: asserta el H1 real y envuelve `<App />` en
   `MemoryRouter` con un helper `enRuta(ruta)`, porque `App` ya tiene `<Routes>`.
 - `src/App.js` ya no importa `./logo.svg`.
+
+## Reglas de móvil y color (salieron de auditar el sitio con un navegador real)
+
+Todas se vigilan con tests o se pueden volver a medir; cuando toques uno de estos puntos, no los
+rompas:
+
+- **Cualquier halo con `-z-10` necesita `isolate` en su `<section>`.** Sin `isolate`, el halo se
+  pinta detrás del `bg-black` de la raíz de `App.js` y **no se ve nunca** (medido: 0 píxeles con
+  tinte azul; con `isolate`, ~378 000). Aplica a `Hero.js`, `Panel.js` y `LlamadaFinal.js`.
+  `LlamadaFinal` además necesita `relative`, porque su halo vive dentro del `div` de `Aparecer`.
+- **Piso de contraste: `text-white/50` para texto que se lee.** Contra el fondo negro, `/45` da
+  4.41:1 y `/30` da 2.46:1, y ambos fallan el mínimo de WCAG AA. La única excepción viva es el
+  número gigante de los pasos en `ComoFunciona` (`/40` a 36–48 px, que es texto grande). El test
+  "el texto chico nunca baja de la mitad de blanco" recorre las cuatro rutas y falla si vuelve
+  cualquier `text-white/45` o menor en texto normal.
+- **Los números del mapa solo se dibujan desde `md`.** A 360 px el mapa mide 320 px y el dígito
+  mayor queda en 7 px reales; los chips de abajo (`Estado · N`) y el `<title>` del SVG ya dan el
+  dato, así que en móvil no se pierden.
+- **Los posters de los videos tienen que existir en `public/videos/`**: `NebulaVideo-poster.jpg` y
+  `NebulaVideo1-poster.jpg` (se generan con `ffmpeg -ss 8 -i <video> -frames:v 1 -vf
+  scale=1400:-2 -q:v 4 <salida>.jpg`). Antes `Panel.js` apuntaba a un poster inexistente y
+  `Sistema.js` no tenía poster: en iOS con ahorro de energía el video queda como un rectángulo
+  negro. Hay un test que comprueba que los dos archivos están en disco.
+- **`width`/`height` de los `<video>` tienen que ser los del archivo real**: el del hero es
+  2118x**1032** (no 1284) y el de `/sistema` 2118x1284. Con el valor equivocado el navegador
+  reserva una caja más alta y la página salta al cargar.
+- **Ningún margen negativo puede ser mayor que el padding de su sección.** `Caracteristicas` usa
+  `-mx-5 px-5 lg:-mx-6 lg:px-6` contra un `px-5 lg:px-8`: con `sm:-mx-6` la página se salía 4 px
+  entre 640 y 1023 px. Regla general: sangrado ≤ padding.
+- **Áreas táctiles:** los puntos de la galería son botones de `h-8 w-6` (24x32) con la barrita de
+  6 px dentro; antes eran de 6x6 y no se podían tocar. Los enlaces de texto chico llevan `py-*`
+  para llegar a ~27–32 px (pie, "Ver el detalle de cada plan", menú de escritorio).
+- **El cintillo del hero se parte en dos filas en móvil** (`flex-wrap justify-center gap-y-1
+  text-center`) y su flecha es `hidden sm:block`, porque a 320 px se caía a una tercera línea.
+- **Promos:** el "2 meses gratis" del toggle mensual/anual se quitó porque era la misma promo
+  derogada que el test de "mes gratis", y ese texto solo aparecía al pulsar "Anual", fuera del
+  alcance del test. El test ahora también busca la palabra en el código, no solo en el DOM. El
+  descuento sigue dicho con "Equivale a 10 meses de pago".
+- **`Aparecer` acepta `como="li"`** para no meter un `div` entre un `<ol>` y sus `<li>`
+  (`ComoFunciona`); si agregas otra lista animada, usa la prop en vez de envolver a mano.
+- **Los `select` del formulario llevan flecha propia** (`Icono nombre="flecha"` rotada 90°,
+  `pointer-events-none`) porque van con `appearance-none`; sin ella no parecían desplegables.
+- El modal usa `max-h-[92vh] max-h-[92dvh]` y `pb-10` en móvil: con `vh` solo, en iOS el botón de
+  enviar quedaba pegado al borde.
+- Para volver a auditar: no hay Playwright ni Puppeteer en el proyecto y el shim
+  `/opt/homebrew/bin/chromium` está roto (apunta a un `/Applications/Chromium.app` que no
+  existe). Lo que sí funciona es `puppeteer-core` en un directorio temporal con
+  `executablePath: "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"`, sirviendo
+  `build/` con un servidor estático con fallback a `index.html`.
 
 ## Layout
 

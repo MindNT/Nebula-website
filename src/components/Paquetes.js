@@ -48,9 +48,6 @@ export default function Paquetes({ nivel: Titulo = "h2", onProbar }) {
                 }`}
               >
                 {opcion.texto}
-                {opcion.valor && (
-                  <span className="ml-1.5 text-azul-200">2 meses gratis</span>
-                )}
               </button>
             ))}
           </div>
@@ -86,7 +83,7 @@ export default function Paquetes({ nivel: Titulo = "h2", onProbar }) {
                 <p className="mt-1 text-[13px] font-medium text-azul-300">
                   {paquete.etiqueta}
                 </p>
-                <p className="mt-3 text-[13px] leading-relaxed text-white/45">
+                <p className="mt-3 text-[13px] leading-relaxed text-white/55">
                   {paquete.descripcion}
                 </p>
 
@@ -97,11 +94,11 @@ export default function Paquetes({ nivel: Titulo = "h2", onProbar }) {
                       ? paquete.precio.anual
                       : paquete.precio.mensual}
                   </span>
-                  <span className="text-[13px] text-white/45">
+                  <span className="text-[13px] text-white/55">
                     {anual ? "/año" : "/mes"}
                   </span>
                 </p>
-                <p className="mt-1 text-[11px] text-white/30">
+                <p className="mt-1 text-[11px] text-white/55">
                   {anual
                     ? "Equivale a 10 meses de pago"
                     : "Facturación mensual, cancela cuando quieras"}
@@ -140,7 +137,7 @@ export default function Paquetes({ nivel: Titulo = "h2", onProbar }) {
           ))}
         </div>
 
-        <p className="mt-10 text-center text-[13px] text-white/35">
+        <p className="mt-10 text-center text-[13px] text-white/55">
           ¿Tienes varias sucursales? Un asesor prepara la propuesta con el número
           de terminales y el volumen de tu operación.
         </p>

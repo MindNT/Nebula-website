@@ -26,7 +26,7 @@ export default function PlanesResumen({ onProbar }) {
           </p>
           <Link
             to="/planes"
-            className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-semibold text-azul-300 transition-colors hover:text-azul-200"
+            className="mt-5 inline-flex items-center gap-1.5 py-1.5 text-[13px] font-semibold text-azul-300 transition-colors hover:text-azul-200"
           >
             Ver el detalle de cada plan
             <Icono nombre="flecha" className="h-3.5 w-3.5" />
@@ -58,9 +58,9 @@ export default function PlanesResumen({ onProbar }) {
                     {MONEDA}
                     {paquete.precio.mensual}
                   </span>
-                  <span className="text-[13px] text-white/45">/mes</span>
+                  <span className="text-[13px] text-white/55">/mes</span>
                 </p>
-                <p className="mt-1 text-[11px] text-white/30">
+                <p className="mt-1 text-[11px] text-white/55">
                   Anual: {MONEDA}
                   {paquete.precio.anual}
                 </p>

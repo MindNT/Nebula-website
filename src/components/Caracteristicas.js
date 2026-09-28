@@ -43,7 +43,7 @@ export default function Caracteristicas({ nivel: Nivel = "h2", children }) {
           </p>
 
           <div className="mt-8 hidden rounded-3xl border border-white/10 bg-white/[0.03] p-5 lg:block">
-            <p className="text-[13px] text-white/35">Estás viendo</p>
+            <p className="text-[13px] text-white/55">Estás viendo</p>
             <div className="mt-3 flex items-center gap-3">
               <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-azul-500 text-white">
                 <Icono nombre={actual.icono} className="h-[18px] w-[18px]" />
@@ -52,7 +52,7 @@ export default function Caracteristicas({ nivel: Nivel = "h2", children }) {
                 {actual.titulo}
               </p>
             </div>
-            <p className="mt-3 text-[13px] leading-relaxed text-white/45">
+            <p className="mt-3 text-[13px] leading-relaxed text-white/55">
               {actual.texto}
             </p>
           </div>
@@ -73,7 +73,9 @@ export default function Caracteristicas({ nivel: Nivel = "h2", children }) {
                 items.current[indice] = nodo;
               }}
               data-indice={indice}
-              className={`relative -mx-4 px-4 py-8 transition-colors duration-500 sm:-mx-6 sm:px-6 ${
+              // El margen negativo nunca puede ser mayor que el padding de la
+              // seccion (px-5, lg:px-8): con sm:-mx-6 la pagina se salia 4px.
+              className={`relative -mx-5 px-5 py-8 transition-colors duration-500 lg:-mx-6 lg:px-6 ${
                 activo === indice ? "bg-white/[0.04]" : "bg-transparent"
               }`}
             >
